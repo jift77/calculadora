@@ -1,0 +1,10 @@
+com\mycompany\Entities\FincaRaiz.class
+com\mycompany\calculadora\CalculadoraController.class
+com\mycompany\Entities\CanastaFamiliar.class
+com\mycompany\calculadora\Categoria.class
+com\mycompany\Entities\Otro.class
+com\mycompany\Entities\Tecnologia.class
+com\mycompany\Entities\Producto.class
+com\mycompany\Operaciones\CalculadoraDbManager.class
+com\mycompany\Interfaces\IOperProducto.class
+com\mycompany\Operaciones\OperProducto.class

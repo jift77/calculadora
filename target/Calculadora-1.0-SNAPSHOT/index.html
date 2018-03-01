@@ -21,10 +21,29 @@
                 return $.ajax(settings); 
             }
             
+            ko.extenders.required = function(target, overrideMessage) {
+                target.hasError = ko.observable();
+                target.validationMessage = ko.observable();
+                function validate(newValue) {
+                   target.hasError(newValue ? false : true);
+                   target.validationMessage(newValue ? "" : overrideMessage || "Este campo es requerido");
+                }
+                validate(target());
+                target.subscribe(validate);
+                return target;
+            };
+            
+            ko.extenders.logChange = function(target, option) {
+                target.subscribe(function(newValue) {
+                   console.log(option + ": " + newValue);
+                });
+                return target;
+            };
+
             var model =  {
                     categorias :  ko.observable([]),
-                    nombre : ko.observable(""),
-                    valor : ko.observable(""),
+                    nombre : ko.observable("").extend({ required: "" }),
+                    valor : ko.observable("").extend({ required: "" }),
                     categoria : ko.observable("")
                 }
             
@@ -46,7 +65,7 @@
                     return 0
             })
             
-            function notificar(){
+            var notificar = function(){
                 $(".alert").toggleClass('in out'); 
                 return false; // Keep close.bs.alert event from removing from DOM
             }
@@ -57,14 +76,15 @@
                     valor: model.valor(),
                     categoria: model.categoria().Nombre
                 }
-                console.log(data);
-                /*sendRequest(url,'POST',data)
+                sendRequest(url,'POST',data)
                         .done(()=>{
                             notificar();
                         }).fail((e)=>{
                             console.log(e);
-                        })*/
+                        })
             }
+            
+            
             
             $(function(){
                 ko.applyBindings();
@@ -88,11 +108,13 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="nombre">Nombre Producto: </label>
-                    <input type="text" data-bind="textInput: model.nombre" id="nombre" class="form-control"></input>
+                    <input type="text" data-bind="textInput: model.nombre " id="nombre" class="form-control"></input>
+                    <span data-bind='visible: model.nombre.hasError, text: model.nombre.validationMessage'></span>
                 </div>
                 <div class="form-group">
                     <label for="valor">Valor:</label>
                     <input type="number" data-bind="textInput: model.valor" class="form-control" id="valor">
+                    <span data-bind='visible: model.valor.hasError, text: model.valor.validationMessage'></span>
                 </div>
                 <div class="form-group">
                     <label for="categoria">Categoria</label>
@@ -107,13 +129,13 @@
                     <input type="text" data-bind="value: total() + ' $'" disabled="disabled" class="form-control" width="20px" name="total" id="total">
                 </div>
                 <div class="form-group">
-                    <button type="button" data-bind="click: guardar" class="btn btn-primary">Guardar</button>
+                    <button type="button" data-bind="click: guardar, disable: model.valor.hasError || model.nombre.hasError" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
-            <div class="alert alert-success fade out" id="bsalert">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Registro almacenado!</strong> 
-            </div>
+        </div>
+        <div class="alert alert-success fade out" id="bsalert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Registro almacenado!</strong> 
         </div>
         <div class="col-sm-2"></div>
     </body>

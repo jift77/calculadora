@@ -13,5 +13,5 @@ import com.mycompany.Entities.Producto;
  */
 public interface IOperProducto {
     
-    public int InsertarProducto(Producto prod);
+    public void InsertarProducto(Producto prod) throws Exception;
 }

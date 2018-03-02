@@ -10,6 +10,7 @@ import com.mycompany.Entities.FincaRaiz;
 import com.mycompany.Entities.Otro;
 import com.mycompany.Entities.Producto;
 import com.mycompany.Entities.Tecnologia;
+import com.mycompany.Operaciones.OperProducto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -28,10 +29,11 @@ public class CalculadoraController {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void InsertarProducto(Producto pro)
+    public void InsertarProducto(Producto pro) throws Exception
     {
         Producto prod = Tecnologia.resolver(pro);
-        prod.total();
+        OperProducto oper = new OperProducto();
+        oper.InsertarProducto(pro);
     }
    
     @GET

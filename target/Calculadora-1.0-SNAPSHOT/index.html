@@ -48,6 +48,9 @@
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Registro almacenado!</strong> 
         </div>
+        <div class="alert alert-danger text-center"
+            data-bind="visible: model.hasServerError(), text: model.ServerError()">
+        </div>
         <div class="col-sm-2"></div>
     </body>
 </html>

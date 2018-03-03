@@ -40,7 +40,9 @@ var model =  {
         categorias :  ko.observable([]),
         nombre : ko.observable("").extend({ required: "" }),
         valor : ko.observable("").extend({ required: "" }),
-        categoria : ko.observable("")
+        categoria : ko.observable(""),
+        hasServerError: ko.observable(false),
+        ServerError: ko.observable()
     }
 
 var total = ko.computed(function() {
@@ -74,9 +76,11 @@ var guardar = function() {
     }
     sendRequest(url,'POST',data)
             .done(()=>{
+                model.hasServerError(false);
                 notificar();
             }).fail((e)=>{
-                console.log(e);
+                model.hasServerError(true);
+                model.ServerError(`No se pudo insertar el producto. Error: ${e.status}, ${e.statusText}`)
             })
 }
 
@@ -87,7 +91,10 @@ $(function(){
             .done((d)=>{
                 model.categorias(d);
             })
-            .fail((d)=> {console.log(d)})
+            .fail((d)=> {
+                model.hasServerError(true);
+                model.ServerError(`No se pudo obtener las categorias. Error: ${e.status}, ${e.statusText}`)
+            })
 })
 
 

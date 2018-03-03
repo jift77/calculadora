@@ -33,7 +33,7 @@ public class CalculadoraController {
     {
         Producto prod = Tecnologia.resolver(pro);
         OperProducto oper = new OperProducto();
-        oper.InsertarProducto(pro);
+        oper.InsertarProducto(prod);
     }
    
     @GET
